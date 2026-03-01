@@ -2,6 +2,7 @@ package com.fernando.webservice.config;
 
 import com.fernando.webservice.model.entities.*;
 import com.fernando.webservice.model.entities.enums.OrderStatus;
+import com.fernando.webservice.model.entities.enums.PaymentType;
 import com.fernando.webservice.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -53,9 +54,9 @@ public class TestConfig implements CommandLineRunner {
 
         User u1 = new  User(null, "Carlos", "carlos@gmail", "123", "9000-0000");
         User u2 = new  User(null, "Maria", "maria@gmail", "1234", "8000-0000");
-        Order o1 = new  Order(null, Instant.now(), OrderStatus.WATING_PAYMENT, u1);
-        Order o2 = new  Order(null, Instant.now(),OrderStatus.PAID,u2);
-        Order o3 = new  Order(null, Instant.now(),OrderStatus.WATING_PAYMENT,u1);
+        Order o1 = new  Order(null,  Instant.parse("2019-06-20T21:53:06Z"), OrderStatus.WATING_PAYMENT, u1);
+        Order o2 = new  Order(null,  Instant.parse("2019-07-20T19:00:00Z"),OrderStatus.PAID,u2);
+        Order o3 = new  Order(null,  Instant.parse("2019-08-20T08:31:02Z"),OrderStatus.WATING_PAYMENT,u1);
 
         userRepository.saveAll(Arrays.asList(u1,u2));
         orderRepository.saveAll(Arrays.asList(o1,o2, o3));
@@ -66,5 +67,9 @@ public class TestConfig implements CommandLineRunner {
         OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
 
         orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
+
+        Payment payment1 = new Payment(null, Instant.parse("2019-08-20T12:00:00Z"), 0.0, PaymentType.PIX, o2);
+        o1.setPayment(payment1);
+        orderRepository.save(o1);
     }
 }
