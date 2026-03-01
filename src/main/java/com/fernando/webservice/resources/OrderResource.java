@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users/orders")
+@RequestMapping(value = "/orders")
 public class OrderResource {
 
     @Autowired

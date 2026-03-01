@@ -1,12 +1,15 @@
 package com.fernando.webservice.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
+@Table(name = "tb_product")
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +19,12 @@ public class Product implements Serializable {
     private Double price;
     private String imgURL;
 
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
+
     @ManyToMany
     @JoinTable(name = "tb_product_category",  joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    Set<Category> categories = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     public Product() {}
 
@@ -62,5 +68,25 @@ public class Product implements Serializable {
     }
     public Set<Category> getCategories() {
         return categories;
+    }
+    @JsonIgnore
+    public Set<Order> getOrders() {
+        Set<Order> orders = new HashSet<>();
+        for (OrderItem orderItem : items) {
+            orders.add(orderItem.getOrder());
+        }
+        return orders;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
