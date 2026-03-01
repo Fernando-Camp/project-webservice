@@ -16,18 +16,18 @@ public class Product implements Serializable {
     private Double price;
     private String imgURL;
 
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_product_category",  joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     Set<Category> categories = new HashSet<>();
 
     public Product() {}
 
-    public Product(Long id, String name, String description, Double price, String imgURL, Category category) {
+    public Product(Long id, String name, String description, Double price, String imgURL) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgURL = imgURL;
-        categories.add(category);
     }
 
     public Long getId() {
