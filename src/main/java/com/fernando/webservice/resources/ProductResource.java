@@ -1,0 +1,30 @@
+package com.fernando.webservice.resources;
+
+import com.fernando.webservice.model.entities.Product;
+import com.fernando.webservice.repositories.ProductRepository;
+import com.fernando.webservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(value = "/products")
+public class ProductResource {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public List<Product> findAll() {
+        return productService.findAll();
+    }
+
+    @GetMapping(value = "/{id}")
+    public Product findById(@PathVariable Long id) {
+        return productService.findById(id);
+    }
+}
