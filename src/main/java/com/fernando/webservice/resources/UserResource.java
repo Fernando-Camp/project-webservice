@@ -41,6 +41,11 @@ public class UserResource {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+    return ResponseEntity.ok().body(userService.update(id,user));
+    }
+
 //    @PostMapping - retorna 200 como HTTP status code
 //    public ResponseEntity<User> createUser(@RequestBody User user) {
 //        user = userService.insert(user);
