@@ -35,6 +35,12 @@ public class UserResource {
         return ResponseEntity.created(uri).body(user); // Retorna 201 como HTTP status code
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 //    @PostMapping - retorna 200 como HTTP status code
 //    public ResponseEntity<User> createUser(@RequestBody User user) {
 //        user = userService.insert(user);
