@@ -4,6 +4,7 @@ import com.fernando.webservice.model.entities.User;
 import com.fernando.webservice.repositories.UserRepository;
 import com.fernando.webservice.services.exceptions.DataBaseException;
 import com.fernando.webservice.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -46,9 +47,13 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        User x = userRepository.getReferenceById(id);
-        updateData(x, user);
-        return userRepository.save(x);
+        try {
+            User x = userRepository.getReferenceById(id);
+            updateData(x, user);
+            return userRepository.save(x);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     public void updateData(User x, User user) {
